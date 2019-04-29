@@ -1,3 +1,5 @@
+ENCODAGE : # -*- coding: iso-8859-15 -*-
+
 METHODES DE L'OBJET LEVEL :
 
 getRang(self, rang) => rang =1,2,3, retourne le temps pour chacun
