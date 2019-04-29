@@ -9,4 +9,16 @@ getPosition(self) => le tableau des positions (int)
 
 FICHIERS :
 
-saves/levels.lvl = Le fichier avec tous les niveaux personnalisés
+saves/[NOMNIVEAU].lvl = Le fichier avec tous les niveaux personnalisés
+
+FORMAT DE NIVEAU : les | indiquent un changement de ligne
+
+
+#################################################  //ligne de debut de niveau
+NOM:nom|
+RANG:rang1;temps,rang2;temps,rang3;temps|
+1312312122221351531531654|//le tableau des chiffres des blocs
+1561516153513513515135315|
+4184618618135318318313183|
+################################################  //ligne de fin de niveau
+
