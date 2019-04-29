@@ -1,0 +1,5 @@
+METHODES DE L'OBJET LEVEL :
+
+getRang(self, rang) => rang =1,2,3, retourne le temps pour chacun
+getNom(self) => nom (String)
+getPosition(self) => le tableau des positions (int)
