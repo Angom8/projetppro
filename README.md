@@ -12,3 +12,7 @@ https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/232
 
 Gestion de fichiers:
 https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/232431-utilisez-des-fichiers
+
+
+Parcours chaînes de caractères :
+https://allen-downey.developpez.com/livres/python/pensez-python/?page=chaines-de-caracteres
