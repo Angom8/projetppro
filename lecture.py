@@ -10,7 +10,8 @@ def incrementer(nb1, nb2):
 	nb1 += 1
 
 
-import Level
+from Level import Level
+
 def lecture(nomLvl):
 	nom = nomLvl
 
@@ -21,35 +22,40 @@ def lecture(nomLvl):
 	virgule = ';'
 	
 	
-	compte = 0
-	parcourir(contenu, compte, barre)
+	compte = 0							#debut a 0
+	compte = parcourir(contenu, compte, barre)			#premiere barre (apres nom)
 	nom = contenu[4 : compte]
 
-	compte1 = compte + 6
-	parcourir(contenu, compte, virgule)
-	rang1 = str(contenu[compte1 : compte])
+	compte1 = compte + 6						#on saute le nom
+	compte = parcourir(contenu, compte, virgule)			
+	rang1 = str(contenu[compte1 : compte])				
 	rang1 = int(rang1)
 	
 	incrementer(compte, compte1)
-	parcourir(contenu, compte, virgule)
+	compte = parcourir(contenu, compte, virgule)
 	rang2 = str(contenu[compte1 : compte])
 	rang2 = int(rang2)
 	
 	incrementer(compte, compte1)
-	parcourir(contenu, compte, virgule)
+	compte = parcourir(contenu, compte, virgule)
 	rang3 = str(contenu[compte1 : compte])
-	rang3 = int(rang3)
+	rang3 = int(rang3)						#fin des rangs
 	
-	
+	incrementer(compte, compte1)					#saut point virgule
+	compte = parcourir(contenu, compte, barre)
+	rang = contenu[compte1 : compte]
+	ligne = [0]*len(rang.split(','))
+	ligne[0]= rang.split(',')
 	
 	i = 0
-	while compte < len(contenu):
+	while compte < len(contenu) and i < len(ligne):
 		incrementer(compte, compte1)
-		parcourir(contenu, compte, barre)
+		compte = parcourir(contenu, compte, barre)
 		rang = contenu[compte1 : compte]
-		ligne[i] = rang.spit(',')
+		ligne[i]= rang.split(',')
 		i += 1
-
+		
+		
 	position = []
 	for x in range(i):
 		position.append(ligne[x])
@@ -58,6 +64,9 @@ def lecture(nomLvl):
 
 
 	level = Level(nom, rang1, rang2, rang3)
+
+	print str(rang1) + str(rang2) + str(rang3)
+	print str(position)
 
 	level.setPosition(position)
 
