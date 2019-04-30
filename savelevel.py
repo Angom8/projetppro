@@ -6,7 +6,7 @@ def savelevel(niveau):
 	save = open(niveau.getNom() + ".lvl", 'w')
 	save.write('NOM:' + niveau.getNom() +'|')
 	"rangs et temps"
-	save.write('RANG:' + str(niveau.getRang(1)) + ";" + str(niveau.getRang(2)) + ";" + str(niveau.getRang(3)))
+	save.write('RANG:' + str(niveau.getRang(1)) + ";" + str(niveau.getRang(2)) + ";" + str(niveau.getRang(3)) + ";")
 	"le niveau en lui-même"
 	l = 0
 	c = 0
@@ -16,5 +16,6 @@ def savelevel(niveau):
 			save.write(str(positions[l][c]))
 			c += 1
 		save.write("|")
-		l += 1 
+		l += 1
+		c = 0 
 	save.close()
