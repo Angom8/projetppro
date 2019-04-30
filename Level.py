@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-15 -*-
 
 class Level(object):
 	"""docstring for Level"""
