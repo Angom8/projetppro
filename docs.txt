@@ -5,22 +5,15 @@ METHODES DE L'OBJET LEVEL :
 getRang(self, rang) => rang =1,2,3, retourne le temps pour chacun
 getNom(self) => nom (String)
 getPosition(self) => le tableau des positions (int)
-
-
-
+setPosition(self, tab) => definir le tableau de position (2d !!!)
 
 FICHIERS :
 
-saves/[NOMNIVEAU].lvl = Le fichier avec tous les niveaux personnalisés
+saves/[NOMNIVEAU].lvl = Le fichier avec tous les niveaux
 
-FORMAT DE NIVEAU : les | indiquent un changement de ligne
+FORMAT DE NIVEAU :
 
-
-#################################################  //ligne de debut de niveau
 NOM:nom|
-RANG:rang1;temps,rang2;temps,rang3;temps|
-1312312122221351531531654|//le tableau des chiffres des blocs
-1561516153513513515135315|
-4184618618135318318313183|
-################################################  //ligne de fin de niveau
-
+RANG:temps;temps;temps;                           //les temps des rangs 1, 2 et 3
+1312312122221351531531654|                        //le tableau 2D des chiffres des blocs
+1561516153513513515135315|                          
