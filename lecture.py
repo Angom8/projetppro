@@ -27,15 +27,18 @@ def lecture(nomLvl):
 
 	compte1 = compte + 6
 	parcourir(contenu, compte, virgule)
-	rang1 = int(contenu[compte1 : compte])
+	rang1 = str(contenu[compte1 : compte])
+	rang1 = int(rang1)
 	
 	incrementer(compte, compte1)
 	parcourir(contenu, compte, virgule)
-	rang2 = int(contenu[compte1 : compte])
+	rang2 = str(contenu[compte1 : compte])
+	rang2 = int(rang2)
 	
 	incrementer(compte, compte1)
 	parcourir(contenu, compte, virgule)
-	rang3 = int(contenu[compte1 : compte])
+	rang3 = str(contenu[compte1 : compte])
+	rang3 = int(rang3)
 	
 	
 	
