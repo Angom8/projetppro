@@ -11,11 +11,8 @@ def savelevel(niveau):
 	l = 0
 	c = 0
 	positions =  niveau.getPosition()
-	while l < len(positions):
-		while c < len(positions[0]):
-			save.write(str(positions[l][c]))
-			c += 1
+	for l in range(len(positions)) :
+		for c in range(len(positions[l])) :
+			save.write(str(positions[l][c]) + ",")
 		save.write("|")
-		l += 1
-		c = 0 
 	save.close()
