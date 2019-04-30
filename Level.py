@@ -1,4 +1,5 @@
-
+#Un niveau, avec 3 rangs et un nom definissant l'emplacement du fichier
+# -*- coding: iso-8859-15 -*-
 class Level(object):
 	"""docstring for Level"""
 	def __init__(self, nom, rang1, rang2, rang3):
@@ -25,3 +26,6 @@ class Level(object):
 
 	def getPosition(self):
 		return self.position
+		
+	def setPosition(self, tab) :
+		self.position = tab
