@@ -9,7 +9,8 @@ setPosition(self, tab) => definir le tableau de position (2d !!!)
 
 FICHIERS :
 
-saves/[NOMNIVEAU].lvl = Le fichier avec tous les niveaux
+saves/ = Le fichier avec tous les niveaux. Contient aussi les scores
+baselevels/ = tous les niveaux proposés de base avec le jeu
 
 FORMAT DE NIVEAU :
 
@@ -17,3 +18,4 @@ NOM:nom|
 RANG:temps;temps;temps;                           //les temps des rangs 1, 2 et 3
 1,3,1,2,3,1,2,1,2,2,2,2,1,3,5,1,5,3,1,5,3,1,6,5,4|                        //le tableau 2D des chiffres des blocs
 1,5,6,1,5,1,6,1,5,3,5,1,3,5,1,3,5,1,5,1,3,5,3,1,5|#                        //# = fin de niveau                          
+
