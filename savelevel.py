@@ -13,6 +13,9 @@ def savelevel(niveau):
 	positions =  niveau.getPosition()
 	for l in range(len(positions)) :
 		for c in range(len(positions[l])) :
-			save.write(str(positions[l][c]) + ",")
+			save.write(str(positions[l][c]))
+			if c+1 < len(positions[l]): 
+				save.write(",")
 		save.write("|")
+	save.write("#")
 	save.close()
