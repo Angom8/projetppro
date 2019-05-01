@@ -8,11 +8,17 @@ def normal_text(texte, x, y, color):
     font_text = pygame.font.SysFont('roboto', 17)
     affichage = font_text.render(texte, 1, (color))
     screen.blit(affichage,(x,y))
+    
 def title_text(texte, x, y, color): 
     font_text = pygame.font.SysFont('roboto', 35)
     affichage = font_text.render(texte, 1, (color))
     screen.blit(affichage,(x,y))
 
+def fileremove(niveau):#uniquement custom
+    os.remove("levels/" + niveau.getNom() + ".lvl")
+    
+def printrang(niveau)
+    
 FPS = 30
 
 pygame.init()
@@ -32,6 +38,7 @@ clock = pygame.time.Clock()
 default = os.listdir('baselevels/')
 i = 0
 defaultlevels = [0]*len(default)
+
 for i in range (len(default)):
 	defaultlevels[i] = lecture("baselevels/" + str(default[i]))
 

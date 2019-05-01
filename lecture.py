@@ -6,10 +6,9 @@ def parcourir(tab, nb, String):
 	return nb
 
 from Level import Level
-def lecture(nomLvl):
-	nom = nomLvl
+def lecture(pos):# pos = repertoire du fichier avec nom deja indique
 
-	lecture = open(str(nom), "r")
+	lecture = open(str(pos), "r")
 
 	contenu = lecture.read()
 	barre = '|'
