@@ -15,5 +15,5 @@ FORMAT DE NIVEAU :
 
 NOM:nom|
 RANG:temps;temps;temps;                           //les temps des rangs 1, 2 et 3
-1312312122221351531531654|                        //le tableau 2D des chiffres des blocs
-1561516153513513515135315|                          
+1,3,1,2,3,1,2,1,2,2,2,2,1,3,5,1,5,3,1,5,3,1,6,5,4|                        //le tableau 2D des chiffres des blocs
+1,5,6,1,5,1,6,1,5,3,5,1,3,5,1,3,5,1,5,1,3,5,3,1,5|#                        //# = fin de niveau                          
