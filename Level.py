@@ -30,3 +30,8 @@ class Level(object):
 
 	def setPosition(self, tab) :
 		self.position = tab
+	
+	
+	def _str_(self):
+		result = 'Niveau :' + self.nom + 'de rang 1 : ' + self.rang1 + ', rang 2 : ' + self.rang2 + ' et de rang 3 : ' + self.rang3
+		return result
