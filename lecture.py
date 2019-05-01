@@ -21,39 +21,39 @@ def lecture(nomLvl):
 	virgule = ';'
 	
 	
-	compte = 0										#debut a 0
-	parcourir(contenu, compte, barre)				#premiere barre (apres nom)
-	nom = contenu[4 : compte]
+	fin = 0										#debut a 0
+	parcourir(contenu, fin, barre)				#premiere barre (apres nom)
+	nom = contenu[4 : fin]
 
-	compte = compte + 6								#on saute le nom
-	compte1 = compte
-	parcourir(contenu, compte, virgule)
-	rang1 = str(contenu[compte1 : compte])
+	fin = fin + 6								#on saute le nom
+	debut = fin
+	fin = parcourir(contenu, fin, virgule)
+	rang1 = str(contenu[debut : fin])
 	rang1 = int(rang1)
 	
-	incrementer(compte, compte1)
-	parcourir(contenu, compte, virgule)
-	rang2 = str(contenu[compte1 : compte])
+	incrementer(fin, debut)
+	fin = parcourir(contenu, fin, virgule)
+	rang2 = str(contenu[debut : fin])
 	rang2 = int(rang2)
 	
-	incrementer(compte, compte1)
-	parcourir(contenu, compte, virgule)
-	rang3 = str(contenu[compte1 : compte])
+	incrementer(fin, debut)
+	fin = parcourir(contenu, fin, virgule)
+	rang3 = str(contenu[debut : fin])
 	rang3 = int(rang3)								#fin des rangs
 	
 	
 	
-	incrementer(compte, compte1)					#saut point virgule
-	compte = parcourir(contenu, compte, barre)
-	rang = contenu[compte1 : compte]
+	incrementer(fin, debut)					#saut point virgule
+	fin = parcourir(contenu, fin, barre)
+	rang = contenu[debut : fin]
 	ligne = [0]*len(rang.split(','))
 	ligne[0]= rang.split(',')
 	
 	i = 0
-	while compte < len(contenu):
-		incrementer(compte, compte1)
-		parcourir(contenu, compte, barre)
-		rang = contenu[compte1 : compte]
+	while fin < len(contenu):
+		incrementer(fin, debut)
+		fin = parcourir(contenu, fin, barre)
+		rang = contenu[debut : fin]
 		ligne[i] = rang.spit(',')
 		i += 1
 
