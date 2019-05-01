@@ -1,5 +1,7 @@
-
+# -*- coding: iso-8859-15 -*-
 import pygame
+import os
+from lecture import *
 from pygame.locals import *
 
 def normal_text(texte, x, y, color): 
@@ -27,6 +29,12 @@ pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*l
 pygame.display.flip()
 clock = pygame.time.Clock()
 
+default = os.listdir('baselevels/')
+i = 0
+defaultlevels = [0]*len(default)
+for i in range (len(default)):
+	defaultlevels[i] = lecture("baselevels/" + str(default[i]))
+
 running = True
 
 while running:
@@ -43,14 +51,6 @@ while running:
     pygame.font.init
     title_text("Place ton bloc ! - Choisissez votre niveau :", largeur/7,hauteur/7, (0, 0, 0))
     pygame.font.quit
-    
-    
-    
-    
-    
-    
-    
-    
     
     clock.tick(FPS)
     pygame.display.flip()

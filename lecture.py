@@ -9,7 +9,7 @@ from Level import Level
 def lecture(nomLvl):
 	nom = nomLvl
 
-	lecture = open('saves/'+nom+'.lvl', "r")
+	lecture = open(str(nom), "r")
 
 	contenu = lecture.read()
 	barre = '|'
@@ -46,7 +46,7 @@ def lecture(nomLvl):
 	fin = parcourir(contenu, fin, barre)
 	rang = contenu[debut : fin]
 	position = [rang.split(',')]
-	print str(position)
+	
 
 	while contenu[fin] != '#' :
 		fin += 1
@@ -60,6 +60,5 @@ def lecture(nomLvl):
 	level = Level(nom, rang1, rang2, rang3)
 
 	level.setPosition(position)
-
 
 	return level
