@@ -20,4 +20,4 @@ RANG:temps;temps;temps;                           //les temps des rangs 1, 2 et 
 1,5,6,1,5,1,6,1,5,3,5,1,3,5,1,3,5,1,5,1,3,5,3,1,5|#                        //# = fin de niveau                          
 
 FORMAT DE SAUVEGARDE :                            //0 => pas fait, 3 => rang max
-NIVEAU:RANG,NIVEAU1:RANG,
+NIVEAU:RANG,NIVEAU1:RANG#
