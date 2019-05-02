@@ -103,7 +103,7 @@ def creerBloc(i, niveau):
    
     positions =  niveau.getPosition()
     for l in range(len(positions)) :
-	for c in range(len(positions[l])) :
+    	for c in range(len(positions[l])) :
 		if positions[l][c] == str(i):
 			leBloc[l][c] = i
 			
