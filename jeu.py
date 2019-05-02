@@ -83,7 +83,7 @@ def creerBlocs(niveau):
     	checkdeux = False
     	
     	while g	< len(niveau.getPosition()):#verifie si lon cree encore des blocs ou pas
-    		while h	< len(niveau.getPosition()[g]) and check!= true :
+    		while h	< len(niveau.getPosition()[g]) and check!= True :
     			if i == niveau.getPosition()[h] :
     				checkdeux = True
     			
@@ -92,21 +92,20 @@ def creerBlocs(niveau):
     		g+=1
     	
     	
-    	if checkdeux == false:
-    		check = true
+    	if checkdeux == False:
+    		check = True
     
     return(Blocs, i) #retourne le max i et tous les blocs
         
 def creerBloc(i, niveau):
     
-    leBloc = [0]*len(niveau.getPosition()[0])
+    leBloc = [[0]*len(niveau.getPosition())]*len(niveau.getPosition()[0])
    
     positions =  niveau.getPosition()
     for l in range(len(positions)) :
 	for c in range(len(positions[l])) :
-		if positions[l][c] == i:
+		if positions[l][c] == str(i):
 			leBloc[l][c] = i
-		else:
-			leBloc[l][c] = 0
 			
-    return leBloc	
+    print str(leBloc)
+    return leBloc			
