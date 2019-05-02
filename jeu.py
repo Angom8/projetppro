@@ -86,9 +86,9 @@ def creerBlocs(niveau)
     			if i == niveau.getPosition()[h] :
     				checkdeux = true
     			
-    			h++
+    			h+=1
     		
-    		g ++
+    		g+=1
     	
     	
     	if checkdeux == false:
