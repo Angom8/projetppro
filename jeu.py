@@ -13,4 +13,8 @@ def estTermine(tab, niveau):
 				i += 1
 				j +=1
 	
+	
+	if verif == True
+		terminer()	
+	
 	return verif
