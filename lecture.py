@@ -59,5 +59,26 @@ def lecture(pos):# pos = repertoire du fichier avec nom deja indique
 	level = Level(nom, rang1, rang2, rang3)
 
 	level.setPosition(position)
+	
+def lecturesave(niveau):
 
-	return level
+	lecture = open("saves/save.sv", "r")
+	
+	retour = 0
+	contenu = lecture.read()
+	debut = 0
+	fin = 4
+	
+	while str(contenu[debut:fin]) != niveau.getNom() and tab[fin] != "#":#tant que on ne l'a pas trouve ou que nous ne somme pas a la fin du fichier
+		debut = fin
+		while contenu[fin] != "#" and contenu[fin] != ",":
+			fin += 1
+	
+	if contenu[fin] != "#":
+		debut += len(niveau.getNom() + 1)
+		retour = int(contenu[debut : fin])
+		
+	return(retour)
+	
+			
+	

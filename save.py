@@ -19,7 +19,20 @@ def savelevel(niveau):
 		save.write("|")
 	save.write("#")
 	save.close()
+
+def addsave(niveau, rang):
+	add = open("saves/save.sv", "w")
 	
+	contenu = lecture.read()
+
+	contenu[len(contenu)-1] = null
+	
+	add = open("saves/save.sv", "a")
+	
+	add.write(str(contenu[0:(len(contenu)-1)])
+	
+	add.write("," + niveau.getNom() + ":" + str(rang) + "#")
+
 def removesave(niveau):
 	efface = open("saves/save.sv", "w")
 	
@@ -35,9 +48,8 @@ def removesave(niveau):
 	if contenu[fin] != "#":
 		while contenu[debut] != "," or contenu[debut] != "#":
 			contenu.remove(debut)
-			i += 1
+			
 			
 	efface.close
 	efface = open("saves/save.sv", "a")
 	efface.write(str(contenu))
-	
