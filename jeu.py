@@ -68,3 +68,44 @@ def estTermine(tab, niveau):
 		terminer()	
 	
 	return verif
+
+def creerBlocs(niveau)
+
+    i = 1
+    check = false
+    while check == false:
+    
+    	Blocs.append(creerBloc(i, niveau))#valeur de la case
+    	
+    	g = 0
+    	h = 0
+    	checkdeux = false
+    	
+    	while g	< len(niveau.getPosition():#verifie si lon cree encore des blocs ou pas
+    		while h	< len(niveau.getPosition()[g] and check!= true :
+    			if i == niveau.getPosition()[h] :
+    				checkdeux = true
+    			
+    			h++
+    		
+    		g ++
+    	
+    	
+    	if checkdeux == false:
+    		check = true
+    
+    return(Blocs, i) #retourne le max i et tous les blocs
+        
+def creerBloc(i, niveau)
+    
+    leBloc = [[0]*len(niveau.getPosition()[0])]
+   
+    positions =  niveau.getPosition()
+    for l in range(len(positions)) :
+	for c in range(len(positions[l])) :
+		if positions[l][c] == i:
+			leBloc[l][c] = i
+		else:
+			leBloc[l][c] = 0
+			
+    return leBloc
