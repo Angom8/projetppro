@@ -16,3 +16,8 @@ https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/232
 
 Parcours chaînes de caractères :
 https://allen-downey.developpez.com/livres/python/pensez-python/?page=chaines-de-caracteres
+
+
+
+Interface graphique Pygame
+http://sdz.tdct.org/sdz/interface-graphique-pygame-pour-python.html#Ouvrirunefentre
