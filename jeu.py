@@ -75,8 +75,8 @@ def creerBlocs(niveau):
     check = False
     while check == False:
     	
-    	Blocs = []
-    	Blocs.append(creerBloc(i, niveau))#valeur de la case
+    	blocs = []
+    	blocs.append(creerBloc(i, niveau))#valeur de la case
     	
     	g = 0
     	h = 0
@@ -95,7 +95,7 @@ def creerBlocs(niveau):
     	if checkdeux == False:
     		check = True
     
-    return(Blocs, i) #retourne le max i et tous les blocs
+    return(blocs) #tous les blocs
         
 def creerBloc(i, niveau):
     
@@ -108,4 +108,34 @@ def creerBloc(i, niveau):
 			leBloc[l][c] = i
 			
     print str(leBloc)
-    return leBloc			
+    return leBloc	
+    		
+def drawPiece(x, y, leBloc):
+
+    r = lambda: random.randint(0,255)
+    a = (r(),r(),r())
+    b = (r(),r(),r())
+    pygame.draw.rect(SURFACE, a, (0, 0, 50*len(leBloc), 50*len(leBloc)), 2)
+    for l in range(len(leBloc)):
+        for c in range(len(leBloc[0])):
+        	if leBloc[l][c]:
+        		pygame.draw.rect(SURFACE, b, (l*50, c*50, 50, 50))
+
+
+    
+print str(lecture("levels/Test.lvl").getPosition())
+blocs = creerBlocs(lecture("levels/Test.lvl"))	
+pygame.init()
+ecran = pygame.display.set_mode((640,480),HWSURFACE|DOUBLEBUF|RESIZABLE)
+pygame.display.set_caption("Place ton bloc ! - ")
+pygame.display.set_icon(pygame.image.load("img/icone.png"))
+fond = pygame.image.load("img/background.jpg").convert()
+largeur, hauteur = pygame.display.get_surface().get_size()
+ecran.blit(fond,(0,0))
+SURFACE = pygame.display.set_mode((largeur, hauteur))
+running = True
+drawPiece(100, 100, blocs[0])
+while running:
+    for event in pygame.event.get():
+    	if event.type == pygame.QUIT:
+    	    running = False		
