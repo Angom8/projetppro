@@ -21,3 +21,7 @@ https://allen-downey.developpez.com/livres/python/pensez-python/?page=chaines-de
 
 Interface graphique Pygame
 http://sdz.tdct.org/sdz/interface-graphique-pygame-pour-python.html#Ouvrirunefentre
+
+
+Tetris Pygame :
+http://inventwithpython.com/tetromino.py
