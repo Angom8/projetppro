@@ -29,7 +29,6 @@ def jeu(niveau):
     largeur, hauteur = pygame.display.get_surface().get_size()
     pygame.draw.rect(ecran, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*largeur/10, 8*hauteur/10))
     pygame.display.flip()
-    SURFACE = pygame.display.set_mode((largeur, hauteur))
     clock = pygame.time.Clock()
     running = True
     bloc_graging = False
@@ -40,19 +39,6 @@ def jeu(niveau):
     		elif event.type==VIDEORESIZE:
 			ecran=pygame.display.set_mode(event.dict['size'],HWSURFACE|DOUBLEBUF|RESIZABLE)
 			ecran.blit(pygame.transform.scale(fond,event.dict['size']),(0,0))
-		elif event.type == pygame.MOUSEBUTTONDOWN:
-           		if event.button == 1:            
-               			if rectangle.collidepoint(event.pos):
-                   			bloc_draging = True
-                    			mouse_x, mouse_y = event.pos
-                    			offset_x = rectangle.x - mouse_x
-                    			offset_y = rectangle.y - mouse_y
-
-       		elif event.type == pygame.MOUSEMOTION:
-            		if bloc_draging:
-               			mouse_x, mouse_y = event.pos
-                		bloc.x = mouse_x + offset_x
-                		bloc.y = mouse_y + offset_y
 
   	largeur, hauteur = pygame.display.get_surface().get_size()
    	pygame.draw.rect(ecran, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*largeur/10, 8*hauteur/10))	
@@ -68,21 +54,26 @@ def creerBlocs(niveau):
 
     i = 1
     check = False
+    blocs = []
+    blocs.append(creerBloc(i, niveau))
+    
     while check == False:
     	
-    	blocs = []
-    	blocs.append(creerBloc(i, niveau))#valeur de la case
-    	
+    	if i != 1 : 
+    		blocs.append(creerBloc(i, niveau))#valeur de la case
+    		
     	g = 0
     	h = 0
     	checkdeux = False
     	
+    	i+=1
+    	
     	while g	< len(niveau.getPosition()):#verifie si lon cree encore des blocs ou pas
     		while h	< len(niveau.getPosition()[g]) and checkdeux != True :
-    			if i == niveau.getPosition()[g][h] :
+    			if str(i) == niveau.getPosition()[g][h] :
     				checkdeux = True
-    			i+=1
     			h+=1
+    		h = 0
     		
     		g+=1
     	
@@ -107,22 +98,35 @@ def creerBloc(i, niveau):
 	l+= 1	
 	c = 0
 
-    print str(leBloc)
     return leBloc	
     		
-def drawPiece(x, y, leBloc):
+def drawBloc(x, y, leBloc, t):
 
     r = lambda: random.randint(0,255)
     a = (r(),r(),r())
     for l in range(len(leBloc)):
         for c in range(len(leBloc[0])):
-        	if leBloc[l][c]:
-        		pygame.draw.rect(SURFACE, a, (c*50, l*50, 50, 50))
+        	if leBloc[l][c] != 0:
+        		pygame.draw.rect(SURFACE , a, (x+ (c*t), y+(l*t), t, t))
 
+def drawBlocs(u, v, niveau):
 
-    
-print str(lecture("levels/Test.lvl").getPosition())
-blocs = creerBlocs(lecture("levels/Test.lvl"))	
+    t = (u*v)
+    blocs = creerBlocs(niveau)
+    t = t/(len(blocs))
+    print str(blocs)
+    c = 0
+    x = t
+    y = t
+    random.shuffle(blocs)
+    for c in range(len(blocs)):
+    	
+    	if(x>u):
+    		y += t
+    		
+    	drawBloc(x, y, blocs[c], t)
+    	x +=  t
+    	
 pygame.init()
 ecran = pygame.display.set_mode((640,480),HWSURFACE|DOUBLEBUF|RESIZABLE)
 pygame.display.set_caption("Place ton bloc ! - ")
@@ -132,9 +136,8 @@ largeur, hauteur = pygame.display.get_surface().get_size()
 ecran.blit(fond,(0,0))
 SURFACE = pygame.display.set_mode((largeur, hauteur))
 running = True
-drawPiece(100, 100, blocs[0])
+drawBlocs(((2*largeur)/100), ((2*hauteur)/100), lecture("levels/Test.lvl"))
 while running:
     for event in pygame.event.get():
     	if event.type == pygame.QUIT:
-    	    running = False
-    	
+		running = False
