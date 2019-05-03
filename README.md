@@ -25,3 +25,6 @@ http://sdz.tdct.org/sdz/interface-graphique-pygame-pour-python.html#Ouvrirunefen
 
 Tetris Pygame :
 http://inventwithpython.com/tetromino.py
+
+Plus d'exemples :
+https://cdn.discordapp.com/attachments/509796705957445632/573556572257648656/makinggames_src.zip
