@@ -1,9 +1,7 @@
 #Sauvegarder un niveau
 # -*- coding: iso-8859-15 -*-
 def savelevel(niveau):
-	from os import chdir
-	chdir ("levels/")
-	save = open(niveau.getNom() + ".lvl", 'w')
+	save = open("levels/" + niveau.getNom() + ".lvl", 'w')
 	save.write('NOM:' + niveau.getNom() +'|')
 	"rangs et temps"
 	save.write('RANG:' + str(niveau.getRang(1)) + ";" + str(niveau.getRang(2)) + ";" + str(niveau.getRang(3)) + ";")
