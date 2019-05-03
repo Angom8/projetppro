@@ -1,9 +1,9 @@
 # -*- coding: iso-8859-15 -*-
-
 import pygame
 import os
 from lecture import *
 from pygame.locals import *
+import random
 
 def normal_text(texte, x, y, color, ecran): 
     font_text = pygame.font.SysFont('roboto', 17)
@@ -29,8 +29,10 @@ def jeu(niveau):
     largeur, hauteur = pygame.display.get_surface().get_size()
     pygame.draw.rect(ecran, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*largeur/10, 8*hauteur/10))
     pygame.display.flip()
+    SURFACE = pygame.display.set_mode((largeur, hauteur))
     clock = pygame.time.Clock()
     running = True
+    bloc_graging = False
     while running:
     	for event in pygame.event.get():
     		if event.type == pygame.QUIT:
@@ -38,7 +40,20 @@ def jeu(niveau):
     		elif event.type==VIDEORESIZE:
 			ecran=pygame.display.set_mode(event.dict['size'],HWSURFACE|DOUBLEBUF|RESIZABLE)
 			ecran.blit(pygame.transform.scale(fond,event.dict['size']),(0,0))
-		
+		elif event.type == pygame.MOUSEBUTTONDOWN:
+           		if event.button == 1:            
+               			if rectangle.collidepoint(event.pos):
+                   			bloc_draging = True
+                    			mouse_x, mouse_y = event.pos
+                    			offset_x = rectangle.x - mouse_x
+                    			offset_y = rectangle.y - mouse_y
+
+       		elif event.type == pygame.MOUSEMOTION:
+            		if bloc_draging:
+               			mouse_x, mouse_y = event.pos
+                		bloc.x = mouse_x + offset_x
+                		bloc.y = mouse_y + offset_y
+
   	largeur, hauteur = pygame.display.get_surface().get_size()
    	pygame.draw.rect(ecran, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*largeur/10, 8*hauteur/10))	
    	pygame.font.init
@@ -48,27 +63,7 @@ def jeu(niveau):
         clock.tick(FPS)
         pygame.display.flip()
     pygame.quit()
-
-
-def estTermine(tab, niveau):
-	i = 0
-	j = 0
-	verif = True
-	
-	while i < len(tab) and verif == True
-		while j < len(tab[i])
-			if tab[i][j] != niveau.getPosition()[i][j]
-				verif = False
-			else 
-				i += 1
-				j +=1
-	
-	
-	if verif == True
-		terminer()	
-	
-	return verif
-
+    
 def creerBlocs(niveau):
 
     i = 1
@@ -83,10 +78,10 @@ def creerBlocs(niveau):
     	checkdeux = False
     	
     	while g	< len(niveau.getPosition()):#verifie si lon cree encore des blocs ou pas
-    		while h	< len(niveau.getPosition()[g]) and check!= True :
-    			if i == niveau.getPosition()[h] :
+    		while h	< len(niveau.getPosition()[g]) and checkdeux != True :
+    			if i == niveau.getPosition()[g][h] :
     				checkdeux = True
-    			
+    			i+=1
     			h+=1
     		
     		g+=1
@@ -98,15 +93,20 @@ def creerBlocs(niveau):
     return(blocs) #tous les blocs
         
 def creerBloc(i, niveau):
-    
-    leBloc = [[0]*len(niveau.getPosition())]*len(niveau.getPosition()[0])
-   
+
     positions =  niveau.getPosition()
-    for l in range(len(positions)) :
-    	for c in range(len(positions[l])) :
+    leBloc = [[0] * len(positions[0]) for _ in range(len(positions))]
+    l = 0
+    c = 0
+    
+    while l < len(positions) :
+    	while c < len(positions[l]) :
 		if positions[l][c] == str(i):
 			leBloc[l][c] = i
-			
+		c += 1		
+	l+= 1	
+	c = 0
+
     print str(leBloc)
     return leBloc	
     		
@@ -114,12 +114,10 @@ def drawPiece(x, y, leBloc):
 
     r = lambda: random.randint(0,255)
     a = (r(),r(),r())
-    b = (r(),r(),r())
-    pygame.draw.rect(SURFACE, a, (0, 0, 50*len(leBloc), 50*len(leBloc)), 2)
     for l in range(len(leBloc)):
         for c in range(len(leBloc[0])):
         	if leBloc[l][c]:
-        		pygame.draw.rect(SURFACE, b, (l*50, c*50, 50, 50))
+        		pygame.draw.rect(SURFACE, a, (c*50, l*50, 50, 50))
 
 
     
@@ -138,4 +136,5 @@ drawPiece(100, 100, blocs[0])
 while running:
     for event in pygame.event.get():
     	if event.type == pygame.QUIT:
-    	    running = False		
+    	    running = False
+    	
