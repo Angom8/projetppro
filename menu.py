@@ -18,7 +18,7 @@ def fileremove(niveau):#uniquement custom
     os.remove("levels/" + niveau.getNom() + ".lvl")
     removeniveau(niveau)
   
-def affichageniveau(niveau, x, y):
+def affichageniveau(niveau, x, y):#le nom + bouton play
     t, h = pygame.display.get_surface().get_size()
     normal_text(niveau.getNom(), x,y, (0, 0, 0))
     panel = pygame.draw.rect(screen, [64,164,151], pygame.Rect(int(x+ 2*t/3), y, 30, 15))
@@ -26,7 +26,7 @@ def affichageniveau(niveau, x, y):
     retour = [niveau, panel, 1, 1]
     return(retour)
   
-def affichageniveaucustom(niveau, x, y):
+def affichageniveaucustom(niveau, x, y):#le nom + boutons play, edit et delete
     t, h = pygame.display.get_surface().get_size()
     normal_text(niveau.getNom(), x,y, (0, 0, 0))
     suppr = pygame.draw.rect(screen, [255,0,0], pygame.Rect(int(x+ 2*t/3-10), y, 40, 15))
@@ -68,7 +68,7 @@ while running:
 	
     largeur, hauteur = pygame.display.get_surface().get_size()
     
-    if largeur > 400 or hauteur > 400:
+    if largeur > 400 or hauteur > 400:#sinon affichage pas bon
 	fond = pygame.image.load("img/background.jpg").convert()
     	screen.blit(fond,(0,0))
    	menu = pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*largeur/10, 8*hauteur/10))
@@ -85,10 +85,8 @@ while running:
 		for c in range(len(niveau)):
 			collide = niveau[c][1].collidepoint(x, y)
 			if collide:
-
-       				## Détecte les clique de souris.
         			pressed = pygame.mouse.get_pressed()
-        			if pressed[0]: # 0=gauche, 1=milieu, 2=droite
+        			if pressed[0]:
             				print "Opening ... " + niveau[c][0].getNom()
 					jeu(niveau[c][0]) 
                 		
@@ -98,18 +96,14 @@ while running:
        			if niveau[c][2] != 1:
 				collide = niveau[c][2].collidepoint(x, y)
 				if collide:
-
-       					## Détecte les clique de souris.
         				pressed = pygame.mouse.get_pressed()
-        				if pressed[0]: # 0=gauche, 1=milieu, 2=droite
+        				if pressed[0]:
             					print "Editing ... " + niveau[c][0].getNom()
 						editeur(niveau[c][0])
 				collide = niveau[c][3].collidepoint(x, y)
 				if collide:
-
-       					## Détecte les clique de souris.
         				pressed = pygame.mouse.get_pressed()
-        				if pressed[0]: # 0=gauche, 1=milieu, 2=droite
+        				if pressed[0]:
             					print "Deleting ... " + niveau[c][0].getNom()
 						fileremove(niveau[c][0])
 			c+=1
