@@ -4,6 +4,7 @@ import os
 from lecture import *
 from save import *
 from pygame.locals import *
+from jeu import *
 
 def normal_text(texte, x, y, color, screen): 
     font_text = pygame.font.SysFont('roboto', 17)
