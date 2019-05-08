@@ -8,7 +8,7 @@ def parcourir(tab, nb, String):
 from Level import Level
 def lecture(pos):# pos = repertoire du fichier avec nom deja indique
 
-	lecture = open(str(pos), "r")
+	lecture = open(pos, "r")
 
 	contenu = lecture.read()
 	barre = '|'
@@ -60,6 +60,8 @@ def lecture(pos):# pos = repertoire du fichier avec nom deja indique
 
 	level.setPosition(position)
 	
+	return(level)
+	
 def lecturesave(niveau):
 
 	lecture = open("saves/save.sv", "r")
@@ -67,16 +69,17 @@ def lecturesave(niveau):
 	retour = 0
 	contenu = lecture.read()
 	debut = 0
-	fin = 4
+	fin = 0
 	
-	while str(contenu[debut:fin]) != niveau.getNom() and tab[fin] != "#":#tant que on ne l'a pas trouve ou que nous ne somme pas a la fin du fichier
-		debut = fin
-		while contenu[fin] != "#" and contenu[fin] != ",":
+	while str(contenu[debut+1:(fin)]) != niveau.getNom() and str(contenu[fin]) != "#":#tant que on ne l'a pas trouve ou que nous ne somme pas a la fin du fichier
+		if fin != 0:
+			debut = fin + 2
+		fin += 1
+		while str(contenu[fin]) != "#" and str(contenu[fin]) != ":":
 			fin += 1
 	
-	if contenu[fin] != "#":
-		debut += len(niveau.getNom() + 1)
-		retour = int(contenu[debut : fin])
+	if str(contenu[fin]) != "#":
+		retour = int(contenu[fin+1])
 		
 	return(retour)
 	
