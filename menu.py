@@ -2,6 +2,7 @@
 import pygame
 import os
 from lecture import *
+from save import *
 from pygame.locals import *
 
 def normal_text(texte, x, y, color): 
@@ -15,8 +16,8 @@ def title_text(texte, x, y, color):
     screen.blit(affichage,(x,y))
 
 def fileremove(niveau):#uniquement custom
+    removesave(niveau)
     os.remove("levels/" + niveau.getNom() + ".lvl")
-    removeniveau(niveau)
   
 def affichageniveau(niveau, x, y, screen):
     t, h = pygame.display.get_surface().get_size()
@@ -130,15 +131,17 @@ while running:
     	niveau.append(affichageniveau(lecture("baselevels/Niveau3.lvl"), largeur/7, hauteur/7 + 100, screen))
 	niveau.append(affichageniveau(lecture("baselevels/Niveau4.lvl"), largeur/7, hauteur/7 + 120, screen))
 	niveau.append(affichageniveau(lecture("baselevels/Niveau5.lvl"), largeur/7, hauteur/7 + 140, screen))
-    
-    	normal_text("Niveaux standards :", largeur/7,hauteur/7 + 170, (0, 0, 0))
-    
-   	liste = os.listdir('levels/')
+	
+	
+    	liste = os.listdir('levels/')
 	inter = 200
-	    
-    	for d in range(len(liste)):
-    		if str(liste[d][len(liste[d])-4:len(liste[d])]) == ".lvl":	
-    			niveau.append(affichageniveaucustom(lecture("levels/" + liste[d]), largeur/7, hauteur/7 + 200 + d*30, screen))
+	
+	if liste:  
+    		normal_text("Niveaux custom :", largeur/7,hauteur/7 + 170, (0, 0, 0))
+  
+    		for d in range(len(liste)):
+    			if str(liste[d][len(liste[d])-4:len(liste[d])]) == ".lvl":	
+    				niveau.append(affichageniveaucustom(lecture("levels/" + liste[d]), largeur/7, hauteur/7 + 200 + d*30, screen))
     
     
     	pygame.font.quit
