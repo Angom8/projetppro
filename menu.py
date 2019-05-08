@@ -144,7 +144,7 @@ def menu():
     		pygame.display.flip()
     	
     	else:
-    		pygame.font.init
+    		pygame.font.init()
     		normal_text("Merci d'agrandir la fenetre (mini 400*400)", 0,0, (255, 0, 0))
     		pygame.font.quit
     		for event in pygame.event.get():
