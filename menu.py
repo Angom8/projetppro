@@ -35,13 +35,11 @@ def affichageniveaucustom(niveau, x, y, screen):
     normal_text(niveau.getNom(), x,y, (0, 0, 0), screen)
     suppr = pygame.draw.rect(screen, [255,0,0], pygame.Rect(int(x+ 2*t/3-10), y, 40, 15))
     normal_text("Delete", x + int(2*t/3 -5), y, (0, 0, 0), screen)
-    edit = pygame.draw.rect(screen, [189,191,38], pygame.Rect(int(x+ 2*t/3 - 40), y, 30, 15))
-    normal_text("Edit", x + int(2*t/3 + 5 - 40), y, (0, 0, 0), screen)
-    play = pygame.draw.rect(screen, [64,164,151], pygame.Rect(int(x+ 2*t/3 - 70), y, 30, 15))
-    normal_text("Play", x + int(2*t/3 + 5 - 70), y, (0, 0, 0), screen)
+    play = pygame.draw.rect(screen, [64,164,151], pygame.Rect(int(x+ 2*t/3 - 40), y, 30, 15))
+    normal_text("Play", x + int(2*t/3 + 5 - 40), y, (0, 0, 0), screen)
     rang = pygame.image.load("img/" + str(lecturesave(niveau)) + ".png").convert_alpha()
     screen.blit(rang, (int(2*t/3 -30), y-5))
-    retour = [niveau, play, edit, suppr]
+    retour = [niveau, play, suppr]
     return(retour)
     
 
@@ -126,27 +124,17 @@ def menu():
        						## Détecte les clique de souris.
         						pressed = pygame.mouse.get_pressed()
         						if pressed[0]: # 0=gauche, 1=milieu, 2=droite
-            							print "Editing ... " + niveau[c][0].getNom()
-								editeur(niveau[c][0])
-						collide = niveau[c][3].collidepoint(x, y)
-						if collide:
-
-       						## Détecte les clique de souris.
-        						pressed = pygame.mouse.get_pressed()
-        						if pressed[0]: # 0=gauche, 1=milieu, 2=droite
             							print "Deleting ... " + niveau[c][0].getNom()
 								fileremove(niveau[c][0])
 					c+=1
-		
-	
-
+				
     		pygame.font.quit()
     		pygame.display.flip()
     	
     	else:
     		pygame.font.init()
     		normal_text("Merci d'agrandir la fenetre (mini 400*400)", 0,0, (255, 0, 0))
-    		pygame.font.quit()
+    		pygame.font.quit
     		for event in pygame.event.get():
         		if event.type == pygame.QUIT:
 				running = False
@@ -158,5 +146,3 @@ def menu():
     		pygame.display.flip()
     
     pygame.quit()
-   
-menu()
