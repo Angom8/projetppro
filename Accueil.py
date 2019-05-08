@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from math import sin
+from menu import *
 import time
 
 FPS = 30
@@ -47,7 +48,7 @@ while running:
 			fenetre.blit(font.render(texte, True, (0, 0, 0)), ((largeur/5) , hauteur*0.5))
 			pygame.display.flip()
 			pygame.time.wait(3000)
-			
+			menu()
 			clock.tick(FPS)
 	
 
