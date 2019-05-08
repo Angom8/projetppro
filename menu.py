@@ -62,8 +62,33 @@ def menu():
     running = True
 
     niveau = []
+    
+    retourdejeu = False
 
     while running:
+	
+	if retourdejeu:
+		FPS = 30
+   		pygame.init() 
+    		screen = pygame.display.set_mode((640,480),HWSURFACE|DOUBLEBUF|RESIZABLE)
+    
+    		pygame.display.set_caption("Place ton bloc ! - Menu")
+    		pygame.display.set_icon(pygame.image.load("img/icone.png"))
+    
+    		fond = pygame.image.load("img/background.jpg").convert()
+    		screen.blit(fond,(0,0))
+    		largeur, hauteur = pygame.display.get_surface().get_size()
+    		menu = pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*largeur/10, 8*hauteur/10))
+    
+   		pygame.display.flip()
+    		clock = pygame.time.Clock()
+   		 
+    		running = True
+
+    		niveau = []
+    		retourdejeu = False
+	
+	
 	
     	largeur, hauteur = pygame.display.get_surface().get_size()
     
@@ -93,6 +118,8 @@ def menu():
     				if str(liste[d][len(liste[d])-4:len(liste[d])]) == ".lvl":	
     					niveau.append(affichageniveaucustom(lecture("levels/" + liste[d]), largeur/7, hauteur/7 + 200 + d*30, screen))
     
+    		pygame.font.quit()
+    		pygame.display.flip()
     
     		for event in pygame.event.get():
         		if event.type == pygame.QUIT:
@@ -102,18 +129,9 @@ def menu():
 				screen.blit(pygame.transform.scale(fond,event.dict['size']),(0,0))
 		
    			if pygame.mouse.get_focused():
+   			
         			x , y = pygame.mouse.get_pos()
 
-				for c in range(len(niveau)):
-					collide = niveau[c][1].collidepoint(x, y)
-					if collide:
-
-       					## Détecte les clique de souris.
-        					pressed = pygame.mouse.get_pressed()
-        					if pressed[0]: # 0=gauche, 1=milieu, 2=droite
-            						print "Opening ... " + niveau[c][0].getNom()
-							jeu(niveau[c][0]) 
-                		
        				c = 0
        	
        				while c < len(niveau):
@@ -127,9 +145,23 @@ def menu():
             							print "Deleting ... " + niveau[c][0].getNom()
 								fileremove(niveau[c][0])
 					c+=1
-				
-    		pygame.font.quit()
-    		pygame.display.flip()
+					
+				for c in range(len(niveau)):
+					collide = niveau[c][1].collidepoint(x, y)
+
+					if collide:
+
+       					## Détecte les clique de souris.
+       						try:
+        						pressed = pygame.mouse.get_pressed()
+        						if pressed[0]: # 0=gauche, 1=milieu, 2=droite
+            							print "Opening ... " + niveau[c][0].getNom()
+								jeu(niveau[c][0])
+								retourdejeu = True
+						except:
+							retourdejeu = True
+							break
+
     	
     	else:
     		pygame.font.init()
