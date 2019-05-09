@@ -1,11 +1,16 @@
-#Sauvegarder un niveau
 # -*- coding: iso-8859-15 -*-
+
+
+#Sauvegarder un niveau avec le format suivant
+#NOM:nomduniveau|RANG:10;20;30;1,1,2,2,3|1,4,5,5,3|1,4,5,5,3|1,4,5,5,3|6,6,6,6,3|#
 def savelevel(niveau):
+
 	save = open("levels/" + niveau.getNom() + ".lvl", 'w')
+	
 	save.write('NOM:' + niveau.getNom() +'|')
-	"rangs et temps"
+
 	save.write('RANG:' + str(niveau.getRang(1)) + ";" + str(niveau.getRang(2)) + ";" + str(niveau.getRang(3)) + ";")
-	"le niveau en lui-même"
+
 	l = 0
 	c = 0
 	positions =  niveau.getPosition()
@@ -18,20 +23,29 @@ def savelevel(niveau):
 	save.write("#")
 	save.close()
 
+#Sauvegarder la progression d'un niveau
 def addsave(niveau, rang):
+
         add = open("saves/save.sv", "r")
         contenu = add.read()
+        
+        #on definit la nouvelle fin du fichier
         contenu.remove(len(contenu)-1)
+        
         add.close()
-        ad = open("saves/save.sv", "a")
+        
+        #on ecrase le fichier
+        ad = open("saves/save.sv", "w")
+        
         ad.write(str(contenu[0:(len(contenu)-1)] + str("," + niveau.getNom() + ":" + str(rang) + "#")))
         ad.close()
-
+#Effacer la progression d'un niveau
 def removesave(niveau):
+
 	efface = open("saves/save.sv", "r")
 	
 	raw = efface.read()
-	contenu = [i for i in raw]
+	contenu = [i for i in raw]#on convertit en tableau
 	debut = 0
 	fin = 0
 	
@@ -45,7 +59,8 @@ def removesave(niveau):
 	if contenu[fin] != "#":
 		while contenu[debut] != "," or contenu[debut] != "#":
 			contenu.remove(debut)
-		
+			
+	#on definit la nouvelle fin du fichier
 	contenu.remove(len(contenu)-1)
 			
 	efface.close()
