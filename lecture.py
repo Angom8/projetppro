@@ -70,7 +70,8 @@ def lecture(pos):
 	level.setPosition(position)
 	
 	return(level)#et on le retourne 
-	
+
+#lecture du rang du niveau dans le fichier de sauvegardes du joueur
 def lecturesave(niveau):
 	#on ouvre le fichier contenant les sauvegardes du joueur
 	lecture = open("saves/save.sv", "r")
