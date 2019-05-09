@@ -28,34 +28,31 @@ pygame.time.set_timer(pygame.USEREVENT, 1000)
 pygame.display.flip()
 clock = pygame.time.Clock()  
 		
-running = True
-
-while running:	
-	for event in pygame.event.get():
-		if event.type == pygame.USEREVENT: #decrementation du timer
-			counter -= 1
-			text = str(counter).rjust(3) if counter > 0 else pygame.quit()
-		if event.type == pygame.QUIT: #si le programme se fini, il se ferme
-			running = False
+for event in pygame.event.get():
+	if event.type == pygame.USEREVENT: #decrementation du timer
+		counter -= 1
+		text = str(counter).rjust(3) if counter > 0 else pygame.quit()
 	
-	#recuperation taille fenetre		
-	largeur, hauteur = pygame.display.get_surface().get_size()
+#recuperation taille fenetre		
+largeur, hauteur = pygame.display.get_surface().get_size()
 	
-	#lecture du son + presentation logo
-	pygame.mixer.music.play()
-	fenetre.blit(logo, ((largeur/2) - 65, hauteur*0.40))
-	pygame.display.flip()
-	pygame.time.wait(4000)
+#lecture du son + presentation logo
+pygame.mixer.music.play()
+fenetre.blit(logo, ((largeur/2) - 65, hauteur*0.40))
+pygame.display.flip()
+pygame.time.wait(4000)
 	
-	#les noms
-	fenetre.blit(fond , (0,0))
-	fenetre.blit(font.render(texte, True, (0, 0, 0)), ((largeur/5+65) , hauteur*0.5))
-	pygame.display.flip()
-	pygame.time.wait(3000)
+#les noms
+fenetre.blit(fond , (0,0))
+fenetre.blit(font.render(texte, True, (0, 0, 0)), ((largeur/5+65) , hauteur*0.5))
+pygame.display.flip()
+pygame.time.wait(3000)
 	
-	#fin son
-	pygame.mixer.music.stop()
+#fin son
+pygame.mixer.music.stop()
 	
+clock.tick(FPS)
 	
-	clock.tick(FPS)
-	menu()
+menu()
+print "Extinction du jeu..."		
+pygame.quit()
