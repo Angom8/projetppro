@@ -1,5 +1,7 @@
 # projetppro
 
+Liens utiles :
+
 Wiki PyGAme
 https://fr.wikibooks.org/wiki/Pygame/Introduction_%C3%A0_Pygame
 
