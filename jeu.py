@@ -37,7 +37,7 @@ def jeu(niveau):
     
     #init timer
     clock = pygame.time.Clock()
-    counter, text = 10, '10'.rjust(3)
+    counter, text = 180, '180'.rjust(3)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     
     #la zone blanche globale derrier les deux autres
