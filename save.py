@@ -27,18 +27,35 @@ def savelevel(niveau):
 def addsave(niveau, rang):
 
         add = open("saves/save.sv", "r")
-        contenu = add.read()
-        
-        #on definit la nouvelle fin du fichier
-        contenu.remove(len(contenu)-1)
-        
-        add.close()
-        
-        #on ecrase le fichier
-        ad = open("saves/save.sv", "w")
-        
-        ad.write(str(contenu[0:(len(contenu)-1)] + str("," + niveau.getNom() + ":" + str(rang) + "#")))
-        ad.close()
+        raw = add.read()
+	x = raw.find(niveau.getNom())
+
+	if x != -1 :
+		x += len(niveau.getNom())
+		x += 1
+		contenu = [i for i in raw]#on convertit en tableau
+		contenu[x] = str(rang) 
+		add.close()
+      		#on ecrase le fichier
+      		ad = open("save.sv", "w")
+        	for c in range(len(contenu)):
+        		ad.write(str(contenu[c]))
+       		ad.close()
+	
+	else:
+		contenu = [i for i in raw]#on convertit en tableau
+       	 	#on definit la nouvelle fin du fichier 
+       	 	contenu.remove('#')
+        	if contenu.count('\n') > 0
+        		contenu.remove('\n')
+		add.close()  
+		retour = ""
+		#on ecrase le fichier
+		for c in range(len(contenu)):
+        		retour += str(contenu[c])
+		ad = open("save.sv", "w")
+		ad.write(retour + "," + niveau.getNom() + ":" + str(rang) + "#")
+		ad.close()
 #Effacer la progression d'un niveau
 def removesave(niveau):
 
