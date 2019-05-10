@@ -4,6 +4,7 @@ import pygame
 import os
 from lecture import *
 from pygame.locals import *
+from save import *
 import random
 import time
 
@@ -18,6 +19,7 @@ def jeu(niveau):
     global zoneblocs, zonejeu#zoneblocs = premier rectangle gris en haut, zonejeu = le deuxieme
     
     running = True
+    gameover = False#Le joueur a-t-il perdu ?
     enjeu= False#le joueur a-t-il lance la partie ?
     bloc_grab = False#un bloc est-il en cours de grab ?
     
@@ -35,7 +37,7 @@ def jeu(niveau):
     
     #init timer
     clock = pygame.time.Clock()
-    counter, text = 180, '180'.rjust(3)
+    counter, text = 10, '10'.rjust(3)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     
     #la zone blanche globale derrier les deux autres
@@ -60,10 +62,11 @@ def jeu(niveau):
     play = pygame.draw.rect(ecran, [64,164,151], pygame.Rect(int(8.75*largeur/10 - 90), 8.5*hauteur/10, 30, 15))
     normal_text("Play", int(8.75*largeur/10 + 5 - 90), 8.5*hauteur/10, (0, 0, 0), ecran)
     
-    #on initialise le tableau de verification (toutes les cases doivent etre pleines)
+    #on initialise le tableau de verification (toutes les cases doivent etre pleines, avec des 1)
     tab = [[0] * len(niveau.getPosition()[0]) for _ in range(len(niveau.getPosition()))]
     
     while running:
+    	font = pygame.font.SysFont('Consolas', 20)
     	for event in pygame.event.get():
     		#une fermeture de fenetre renvoie sur menu par le biais des try/catch
     		if event.type == pygame.QUIT:
@@ -71,7 +74,12 @@ def jeu(niveau):
     		#decompte du timer s'il est en cours
 		if event.type == pygame.USEREVENT and enjeu == True: 
             			counter -= 1
-           			text = str(counter).rjust(3)
+           			if counter < 0:
+           				gameover = True		
+           			else:
+           				text = str(counter).rjust(3)
+           				
+           				
            	#evenements de la souris
 		if pygame.mouse.get_focused():
         			x , y = pygame.mouse.get_pos()
@@ -99,9 +107,16 @@ def jeu(niveau):
             						enjeu = False
             						running = False
             						
-            			#GRAB : Si on relache la souris, le grab se finit			
+            			#GRAB : Si on relache la souris, le grab se finit. On se demande alors si le bloc est bien dans le tableau de la zone de jeu et s'il empiete sur un autre bloc 			
 				if event.type == MOUSEBUTTONUP and bloc_grab and enjeu:
 					bloc_grab = False
+					
+					if verif_superpositionbloc(blocs, bloc_move):
+						placement = verif_superpositionzonejeu(jeuencours, bloc_move)
+						if placement[0]:
+							for p in range(len(placement[1])):
+								g, h = conversion_tab(tab, placement[1][p])
+								tab[g][h] = 1
 					bloc_move = None
 				
 				#GRAB : C'est assez complexe
@@ -119,6 +134,14 @@ def jeu(niveau):
 								if blocs[c][l][0].collidepoint(x, y):#le pixel du bloc c dans le tableau blocs est-il en contact avec la souris ?
 									bloc_grab = True#on active le grapin
 									bloc_move = blocs[c]#le bloc grab est save
+									
+									#on le retire du tableau de zonedejeuu s'il y etait et n'etait pas superpose a un autre bloc						
+									if verif_superpositionbloc(blocs, bloc_move):
+										placement = verif_superpositionzonejeu(jeuencours, bloc_move)
+										if placement[0]:
+											for p in range(len(placement[1])):
+												g, h = conversion_tab(tab, placement[1][p])
+												tab[g][h] = 0
 									verif = True#on sort de la boucle
                    						l += 1
                    					l = 0
@@ -159,7 +182,7 @@ def jeu(niveau):
 	fond = pygame.image.load("img/background.jpg").convert()
     	ecran.blit(fond,(0,0))
 	zglobal = pygame.draw.rect(ecran, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*largeur/10, 8*hauteur/10))								
-  	font = pygame.font.SysFont('Consolas', 20)
+  	
   	ecran.blit(zoneblocs, (1.25*largeur/10,  1.25*hauteur/10))
     	
         zonejeu = pygame.Surface((int(7.5*largeur/10), int(4*hauteur/10)))
@@ -169,7 +192,9 @@ def jeu(niveau):
         #si on est en jeu, on place un tableau a remplir
         if enjeu == True:
    		jeuencours = drawzonejeu(niveau)
-   		ecran.blit(zonejeu, (1.25*largeur/10,  4*hauteur/10))
+   		drawaffichagejeu(niveau, tab)
+   		#petite aide
+   		ecran.blit(font.render("Les blocs ne doivent pas se toucher !", True, (0, 0, 0)), (4*largeur/10, 7.5*hauteur/10))
    		
    	#on redessine les differents blocs
    	reDraw(blocs)
@@ -186,10 +211,16 @@ def jeu(niveau):
   	ecran.blit(fondtimer, (1.25*largeur/10,  8.5*hauteur/10))
    	ecran.blit(font.render(text, True, (0, 0, 0)), (1.25*largeur/10, 8.5*hauteur/10))
    	
-   	
+
         clock.tick(FPS)
         #ne pas supprimer font sature le processus
-        del font
+        
+        if gameover == True:
+   		ecran.blit(font.render("Game over ! Retour au menu ...", True, (255, 0, 0)), (3*largeur/10, 8.5*hauteur/10))
+   		pygame.display.flip()
+   		pygame.time.wait(4000)
+   		running = False
+   	del font
         pygame.display.flip()
     pygame.font.quit() 
     pygame.quit()
@@ -288,11 +319,11 @@ def drawBlocs(u, v, niveau):
     	
     return(retour)
 
-#FOnction pour dessiner la zone de jeu (le tableau de reponse). Retourne un tableau avec les differents RECT de chaque case, vu que l'element est graphique    
+#Fonction pour dessiner la zone de jeu (le tableau de reponse). Retourne un tableau avec les differents RECT de chaque case, vu que l'element est graphique    
 def drawzonejeu(niveau):
 
 
-    x, y = zonejeu.get_size()
+    largeur, hauteur = pygame.display.get_surface().get_size()
     	
     jeuencours = []
     a = (220, 220, 220)
@@ -305,26 +336,43 @@ def drawzonejeu(niveau):
     	for l in range(len(niveau.getPosition())):
     	
     		if(i%2!=0):
-   			jeuencours.append(pygame.draw.rect(zonejeu , a, (c*25, l*25, 25, 25)))
+   			jeuencours.append(pygame.draw.rect(ecran , a, (1.25*largeur/10+c*27, 4*largeur/10+l*27, 27, 27)))
    		else:
-   			jeuencours.append(pygame.draw.rect(zonejeu , b, (c*25, l*25, 25, 25)))
+   			jeuencours.append(pygame.draw.rect(ecran , b, (1.25*largeur/10+c*27, 4*largeur/10+l*27, 27,27)))
    		i+=1
    			
     return(jeuencours)
+    
+#Fonction pour dessiner l'affichage zone de jeu.  
+def drawaffichagejeu(niveau, tab):
+
+
+    largeur, hauteur = pygame.display.get_surface().get_size()
+    	
+    a = (220, 220, 220)
+    b = (93, 218, 49)
+    
+    for c in range(len(niveau.getPosition())):
+    
+    	for l in range(len(niveau.getPosition())):
+    	
+    		if(tab[l][c]==0):
+   			pygame.draw.rect(ecran , a, (1.25*largeur/10+c*27 +200, 4*largeur/10+l*27, 27, 27))
+   		else:
+   			pygame.draw.rect(ecran , b, (1.25*largeur/10+c*27 +200, 4*largeur/10+l*27, 27,27))
 
 #Le jeu se termine quand toutes les cases sont pleines, peu import s'il s'agissait vraiment du bon bloc. Il n'existe ainsi pas qu'une seule solution pour un niveau !
 def estTermine(tab, niveau):
 	i = 0
 	j = 0
-	verif = False
+	verif = True
 	
-	while i < len(tab) and verif == False:
+	while i < len(tab) and verif == True:
 		while j < len(tab[i]):
 			if tab[i][j] != 0:
-				verif = True
-			else:
-				i += 1
-				j +=1
+				verif = False
+			j += 1
+		j +=1
 	
 	return verif
 	
@@ -339,3 +387,64 @@ def title_text(texte, x, y, color, ecran):
     font_text = pygame.font.SysFont('roboto', 35)
     affichage = font_text.render(texte, 1, (color))
     ecran.blit(affichage,(x,y))
+    
+#Le bloc a-t-il un de ses pixels en superposition avec un autre bloc ?
+def verif_superpositionbloc(blocs, lebloc):
+
+    verif = True#collision avec un autre bloc ?
+    z = 0
+    p = 0
+    u = 0
+    while verif == True and  z < len(blocs):#parcours du tableau des blocs
+
+	while verif == True and p < len(lebloc):#parcours des pixels du bloc
+	
+		while verif == True and u < len(blocs[z]):#parcours des pixels du deuxieme bloc
+		
+			if lebloc != blocs[z] and lebloc[p][0].colliderect(blocs[z][u][0]): #le pixel a -t-il une collision ?
+				verif = False#oui donc on arrete tout
+			
+			u +=1
+				
+				
+		u = 0
+		p +=1
+	p = 0
+	z +=1
+
+    return(verif)#si true : pas de superposition, si false : superposition donc pas de changement pour le tableau de sol
+
+#tous les pixels du bloc sont-ils dans la zonedejeu ?    
+def verif_superpositionzonejeu(jeuencours, lebloc):
+
+	pospixels = []#tableau des positions, pratique pour plus tard
+	p = 0
+	verifun = True#un seul des pixels est-il en dehors de la zone
+	
+	while verifun == True and  p < len(lebloc):#parcours des differents pixels du bloc
+	
+		verifdeux = False#le pixel est-il dans une case ? Si oui, pospixels.append[c], sinon on arrete tout
+		c = 0
+		
+		while verifun == True and c < len(jeuencours) and verifdeux == False:#parcours du tableau de solutions
+			if lebloc[p][0].colliderect(jeuencours[c]) : 
+				verifdeux = True
+				pospixels.append(c)
+				
+			c += 1
+				
+		if verifdeux == False : 
+			verifun = False#un des pixels n'est pas dans le tableau
+		p+=1
+		
+	return([verifun, pospixels])#on retourne si oui ou non tous les pixels sont dans le coup et la position dans le tableau de ces derniers
+	
+def conversion_tab(tab, i):
+
+	y = 0
+	while i >= len(tab):
+		i -= len(tab)
+		y += 1
+	x = i
+	
+	return(x, y)		
