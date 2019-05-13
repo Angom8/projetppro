@@ -1,7 +1,7 @@
 # projetppro
 A finir :
 - Correction du bug d'écriture des sauvegardes
-- Faire les niveaux de base 3, 4 et 5
+- Niveau 3 : Corriger bug des pixels
 - Editeur
 
 
