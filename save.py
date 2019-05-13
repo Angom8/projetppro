@@ -46,7 +46,7 @@ def addsave(niveau, rang):
 		contenu = [i for i in raw]#on convertit en tableau
        	 	#on definit la nouvelle fin du fichier 
        	 	contenu.remove('#')
-        	if contenu.count('\n') > 0
+        	if contenu.count('\n') > 0:
         		contenu.remove('\n')
 		add.close()  
 		retour = ""
