@@ -2,6 +2,7 @@
 A finir :
 - Correction du bug d'écriture des sauvegardes
 - Niveau 3 : Corriger bug des pixels
+- Bug si taille de niveau paire
 - Editeur
 
 
