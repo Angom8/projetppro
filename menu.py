@@ -5,6 +5,7 @@ from lecture import *
 from save import *
 from pygame.locals import *
 from jeu import *
+from editeur import *
 
 #pseudo main du fichier
 def menu():
