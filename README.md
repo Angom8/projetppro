@@ -4,6 +4,7 @@ A finir :
 - Niveau 3 : Corriger bug des pixels
 - Bug si taille de niveau paire
 - Editeur
+- musiques
 
 
 Liens utiles :
