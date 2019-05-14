@@ -99,7 +99,7 @@ def editeur():
 				if collide:
 					pressed = pygame.mouse.get_pressed()
 					if pressed[0]: 
-						if estRempli(niveau):
+						if estRempli(niveau) running != False:
 							liste = os.listdir('levels/')
 							valide = False
 							i = 0
