@@ -164,11 +164,22 @@ def jeu(niveau):
 								bloc_move[d][0].y = y
 							else:
 								if bloc_move[d][0].x>xprec and bloc_move[d][0].y==yprec:#si le deuxieme pixel est sur la meme ligne que le precedent
-									xprec = bloc_move[d][0].x#on sauvegarde l'ancienne position
-									yprec = bloc_move[d][0].y
-									a += 25#on ajoute l'espace reglementaire entre deux pixels
-									bloc_move[d][0].x = a#on definit la position du bloc n a celle de la sours + ecart par rapport au bloc 0
-									bloc_move[d][0].y = b
+									if xprec+25 == bloc_move[d][0].x:
+										xprec = bloc_move[d][0].x#on sauvegarde l'ancienne position
+										yprec = bloc_move[d][0].y
+										a += 25#on ajoute l'espace reglementaire entre deux pixels
+										bloc_move[d][0].x = a#on definit la position du bloc n a celle de la sours + ecart par rapport au bloc 0
+										bloc_move[d][0].y = b
+										
+									else:
+										while xprec+25 !=  bloc_move[d][0].x:
+											a +=25
+											xprec += 25
+										xprec = bloc_move[d][0].x#on sauvegarde l'ancienne position
+										yprec = bloc_move[d][0].y
+										a += 25#on ajoute l'espace reglementaire entre deux pixels
+										bloc_move[d][0].x = a#on definit la position du bloc n a celle de la sours + ecart par rapport au bloc 0
+										bloc_move[d][0].y = b
 								elif bloc_move[d][0].y>yprec:#si nouvelle ligne, probleme : comment determiner si le bloc est en recul par rapport aux autres de la ligne d'avant ?
 									while bloc_move[d][0].x<xprec:#Solution : Tq on a un decalage entre l'ancienne position du bloc n-1 et la position actuelle avant deplacement du bloc n, on retire l'espace pour decaler la position
 											a-=25
