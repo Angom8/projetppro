@@ -100,26 +100,29 @@ def jeu(niveau):
 				if collide:
         				pressed = pygame.mouse.get_pressed()
         				if pressed[0]:
-            					if estTermine:
-             						if (180-counter < niveau.getRang(3)):            						
+            					if estTermine(tab):
+            						if (180-counter < niveau.getRang(3)):            						
             							addsave(niveau, 3)
-            						elif (180-counter < niveau.getRang(3)):
+            						elif (180-counter < niveau.getRang(2)):
             							addsave(niveau, 2)
-            						elif (180-counter < niveau.getRang(3)):
+            						elif (180-counter < niveau.getRang(1)):
             							addsave(niveau, 1)
             						enjeu = False
             						running = False
-							
+            					else:
+            						gameover = True
+            						
             			#GRAB : Si on relache la souris, le grab se finit. On se demande alors si le bloc est bien dans le tableau de la zone de jeu et s'il empiete sur un autre bloc 			
 				if event.type == MOUSEBUTTONUP and bloc_grab and enjeu:
 					bloc_grab = False
-					
-					if verif_superpositionbloc(blocs, bloc_move):
-						placement = verif_superpositionzonejeu(jeuencours, bloc_move)
-						if placement[0]:
+					placement = verif_superpositionzonejeu(jeuencours, bloc_move)
+					if placement[0]:
+						bloc_move = repositionnement(bloc_move, jeuencours, placement[1])
+						if verif_superpositionbloc(blocs, bloc_move):
 							for p in range(len(placement[1])):
 								g, h = conversion_tab(tab, placement[1][p])
 								tab[g][h] = 1
+							
 					bloc_move = None
 				
 				#GRAB : C'est assez complexe
@@ -138,9 +141,9 @@ def jeu(niveau):
 									bloc_grab = True#on active le grapin
 									bloc_move = blocs[c]#le bloc grab est save
 									
-									#on le retire du tableau de zonedejeuu s'il y etait et n'etait pas superpose a un autre bloc						
+									#on le retire du tableau de zonedejeuu s'il y etait et n'etait pas superpose a un autre bloc									
 									if verif_superpositionbloc(blocs, bloc_move):
-										placement = verif_superpositionzonejeu(jeuencours, bloc_move)
+										placement = verif_superpositionzonejeu2(jeuencours, bloc_move)
 										if placement[0]:
 											for p in range(len(placement[1])):
 												g, h = conversion_tab(tab, placement[1][p])
@@ -190,6 +193,7 @@ def jeu(niveau):
 									bloc_move[d][0].x = a
 									bloc_move[d][0].y = b
 	
+							
 	largeur, hauteur = pygame.display.get_surface().get_size()
 	
 	#on actualise globalement la fenetre pour eviter de voir se dessiner des petits blocs un peu partout lors du grab !
@@ -206,9 +210,8 @@ def jeu(niveau):
         #si on est en jeu, on place un tableau a remplir
         if enjeu == True:
    		jeuencours = drawzonejeu(niveau)
-   		drawaffichagejeu(niveau, tab)
    		#petite aide
-   		ecran.blit(font.render("Les blocs ne doivent pas se toucher !", True, (0, 0, 0)), (4*largeur/10, 7.5*hauteur/10))
+   		ecran.blit(font.render("Les blocs ne doivent pas se toucher !", True, (0, 0, 0)), (4*largeur/10-50, 7.5*hauteur/10))
    		
    	#on redessine les differents blocs
    	reDraw(blocs)
@@ -349,43 +352,25 @@ def drawzonejeu(niveau):
     	for l in range(len(niveau.getPosition())):
     	
     		if(i%2!=0):
-   			jeuencours.append(pygame.draw.rect(ecran , a, (1.25*largeur/10+c*27, 4*largeur/10+l*27, 27, 27)))
+   			jeuencours.append(pygame.draw.rect(ecran , a, (1.25*largeur/10+c*25+150, 4*largeur/10+l*25, 25, 25)))
    		else:
-   			jeuencours.append(pygame.draw.rect(ecran , b, (1.25*largeur/10+c*27, 4*largeur/10+l*27, 27,27)))
+   			jeuencours.append(pygame.draw.rect(ecran , b, (1.25*largeur/10+c*25+150, 4*largeur/10+l*25, 25,25)))
    		i+=1
    			
     return(jeuencours)
-    
-#Fonction pour dessiner l'affichage zone de jeu.  
-def drawaffichagejeu(niveau, tab):
-
-
-    largeur, hauteur = pygame.display.get_surface().get_size()
-    	
-    a = (220, 220, 220)
-    b = (93, 218, 49)
-    
-    for c in range(len(tab)):
-    
-    	for l in range(len(tab[c])):
-    	
-    		if(tab[l][c]==0):
-   			pygame.draw.rect(ecran , a, (1.25*largeur/10+c*27 +200, 4*largeur/10+l*27, 27, 27))
-   		else:
-   			pygame.draw.rect(ecran , b, (1.25*largeur/10+c*27 +200, 4*largeur/10+l*27, 27,27))
 
 #Le jeu se termine quand toutes les cases sont pleines, peu import s'il s'agissait vraiment du bon bloc. Il n'existe ainsi pas qu'une seule solution pour un niveau !
-def estTermine(tab, niveau):
+def estTermine(tab):
 	i = 0
 	j = 0
 	verif = True
 	
 	while i < len(tab) and verif == True:
 		while j < len(tab[i]):
-			if tab[i][j] != 0:
+			if tab[i][j] == 0:
 				verif = False
 			j += 1
-		j +=1
+		i +=1
 	
 	return verif
 	
@@ -432,6 +417,65 @@ def verif_superpositionzonejeu(jeuencours, lebloc):
 
 	pospixels = []#tableau des positions, pratique pour plus tard
 	p = 0
+	verifun = True
+	x , y = pygame.mouse.get_pos()
+	veriftrois = False
+	c = 0
+	
+	while verifun == True and c < len(jeuencours) and veriftrois == False:#parcours du tableau de solutions
+		
+		if jeuencours[c].collidepoint(x,y) :			 
+			veriftrois = True
+									
+		c += 1
+		
+	if veriftrois == False : 
+		verifun = False#un des pixels n'est pas dans le tableau
+	
+	
+	while verifun == True and  p < len(lebloc):#parcours des differents pixels du bloc
+	
+		verifdeux = False#le pixel est-il dans une case ? Si oui, pospixels.append[c], sinon on arrete tout
+		c = 0
+		
+		while verifun == True and c < len(jeuencours) and verifdeux == False:#parcours du tableau de solutions
+		
+			if lebloc[p][0].colliderect(jeuencours[c]) and lebloc[p][0].x > jeuencours[0].x and lebloc[p][0].y > jeuencours[0].y:			 
+				verifdeux = True
+				pospixels.append(c)
+								
+			c += 1
+				
+		if verifdeux == False : 
+			verifun = False#un des pixels n'est pas dans le tableau
+		p+=1
+		
+	return([verifun, pospixels])#on retourne si oui ou non tous les pixels sont dans le coup et la position dans le tableau de ces derniers
+	
+def repositionnement(lebloc, jeuencours, pospixel):
+	
+	for p in range(len(lebloc)):
+		lebloc[p][0].x = jeuencours[pospixel[p]].x
+		lebloc[p][0].y = jeuencours[pospixel[p]].y
+		
+	return(lebloc)
+			
+	
+def conversion_tab(tab, i):
+
+	y = 0
+	while i >= len(tab):
+		i -= len(tab)
+		y += 1
+	x = i
+	
+	return(x, y)		
+	
+#david gooenough : it works ? 
+def verif_superpositionzonejeu2(jeuencours, lebloc):
+
+	pospixels = []#tableau des positions, pratique pour plus tard
+	p = 0
 	verifun = True#un seul des pixels est-il en dehors de la zone
 	
 	while verifun == True and  p < len(lebloc):#parcours des differents pixels du bloc
@@ -451,13 +495,3 @@ def verif_superpositionzonejeu(jeuencours, lebloc):
 		p+=1
 		
 	return([verifun, pospixels])#on retourne si oui ou non tous les pixels sont dans le coup et la position dans le tableau de ces derniers
-	
-def conversion_tab(tab, i):
-
-	y = 0
-	while i >= len(tab):
-		i -= len(tab)
-		y += 1
-	x = i
-	
-	return(x, y)		
