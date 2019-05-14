@@ -2,8 +2,6 @@
 A finir :
 - Correction du bug d'écriture des sauvegardes
 - Niveau 3 : Corriger bug des pixels
-- menu : espace des niveaux perso
-- 
 
 
 Liens utiles :
