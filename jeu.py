@@ -329,10 +329,9 @@ def drawzonejeu(niveau):
     a = (220, 220, 220)
     b = (230, 230, 230)
     
-    i = 2
     
     for c in range(len(niveau.getPosition())):
-    
+    	i = 2+c
     	for l in range(len(niveau.getPosition())):
     	
     		if(i%2!=0):
