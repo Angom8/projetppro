@@ -1,7 +1,4 @@
 # projetppro
-A finir :
-- Niveau 3 : Corriger bug des pixels
-
 
 Liens utiles :
 
