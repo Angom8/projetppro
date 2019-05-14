@@ -24,8 +24,11 @@ def menu():
     fond = pygame.image.load("img/background.jpg").convert()
     screen.blit(fond,(0,0))
     menu = pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(LARGEUR/10,HAUTEUR/10, 8*LARGEUR/10, 8*HAUTEUR/10)) 
+    pygame.mixer.music.load("sons/menu.mp3")
+    pygame.mixer.music.play()
     pygame.display.flip()
     clock = pygame.time.Clock()
+    
 
     #init du catalogue de niveaux
     niveau = []
@@ -45,6 +48,8 @@ def menu():
     		screen.blit(fond,(0,0))
     		LARGEUR, HAUTEUR = pygame.display.get_surface().get_size()
     		menu = pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(LARGEUR/10,HAUTEUR/10, 8*LARGEUR/10, 8*HAUTEUR/10))
+    		pygame.mixer.music.load("sons/menu.mp3")
+    		pygame.mixer.music.play()
     
    		pygame.display.flip()
     		clock = pygame.time.Clock()
@@ -53,6 +58,9 @@ def menu():
 
     		niveau = []
     		retourdejeu = False
+    		
+    	if pygame.mixer.music.get_busy()!=True:
+    		pygame.mixer.music.play()
     
         #possible resize
     	LARGEUR, HAUTEUR = pygame.display.get_surface().get_size()
@@ -132,6 +140,7 @@ def menu():
         						pressed = pygame.mouse.get_pressed()
         						if pressed[0]:
             							print "Editing ... "
+            							pygame.mixer.music.stop()
 								editeur()
 								retourdejeu = True
 						except:
@@ -160,6 +169,7 @@ def menu():
         							pressed = pygame.mouse.get_pressed()
         							if pressed[0]:
             								print "Opening ... " + niveau[c][0].getNom()
+            								pygame.mixer.music.stop()
 									jeu(niveau[c][0])
 									retourdejeu = True
 							except:
