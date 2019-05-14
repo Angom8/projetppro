@@ -81,7 +81,6 @@ def editeur():
 				running = False
 			#gestion des evenements de la souris
 			if pygame.mouse.get_focused():
-				print str(niveau)
 				x, y = pygame.mouse.get_pos()
 				
 				collide = fleche_rect.collidepoint(x, y)
