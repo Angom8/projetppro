@@ -101,15 +101,15 @@ def jeu(niveau):
         				pressed = pygame.mouse.get_pressed()
         				if pressed[0]:
             					if estTermine:
-            						if ((180-counter) + niveau.getRang(3)) < 180:            						
+             						if (180-counter < niveau.getRang(3)):            						
             							addsave(niveau, 3)
-            						elif ((180-counter) + niveau.getRang(2)) < 180:
+            						elif (180-counter < niveau.getRang(3)):
             							addsave(niveau, 2)
-            						elif ((180-counter) + niveau.getRang(1)) < 180:
+            						elif (180-counter < niveau.getRang(3)):
             							addsave(niveau, 1)
             						enjeu = False
             						running = False
-            						
+							
             			#GRAB : Si on relache la souris, le grab se finit. On se demande alors si le bloc est bien dans le tableau de la zone de jeu et s'il empiete sur un autre bloc 			
 				if event.type == MOUSEBUTTONUP and bloc_grab and enjeu:
 					bloc_grab = False
