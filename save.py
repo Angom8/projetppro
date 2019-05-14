@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-15 -*-
-
+from lecture import *
 
 #Sauvegarder un niveau avec le format suivant
 #NOM:nomduniveau|RANG:10;20;30;1,1,2,2,3|1,4,5,5,3|1,4,5,5,3|1,4,5,5,3|6,6,6,6,3|#
@@ -37,7 +37,7 @@ def addsave(niveau, rang):
 		contenu[x] = str(rang) 
 		add.close()
       		#on ecrase le fichier
-      		ad = open("save.sv", "w")
+      		ad = open("saves/save.sv", "w")
         	for c in range(len(contenu)):
         		ad.write(str(contenu[c]))
        		ad.close()
@@ -53,7 +53,7 @@ def addsave(niveau, rang):
 		#on ecrase le fichier
 		for c in range(len(contenu)):
         		retour += str(contenu[c])
-		ad = open("save.sv", "w")
+		ad = open("saves/save.sv", "w")
 		ad.write(retour + "," + niveau.getNom() + ":" + str(rang) + "#")
 		ad.close()
 #Effacer la progression d'un niveau
@@ -62,27 +62,26 @@ def removesave(niveau):
 	efface = open("saves/save.sv", "r")
 	
 	raw = efface.read()
+	
+	efface.close()
+	
+	if raw.find("," + niveau.getNom() + ":" + str(0)) != -1:
+		raw.replace("," + niveau.getNom() + ":" + str(0), "")
+	if raw.find("," + niveau.getNom() + ":" + str(1)) != -1:
+		raw.replace("," + niveau.getNom() + ":" + str(1), "")	
+	if raw.find("," + niveau.getNom() + ":" + str(2)) != -1:
+		raw.replace("," + niveau.getNom() + ":" + str(2), "")
+	if raw.find("," + niveau.getNom() + ":" + str(3)) != -1:
+		raw.replace("," + niveau.getNom() + ":" + str(3), "")
+	
 	contenu = [i for i in raw]#on convertit en tableau
-	debut = 0
-	fin = 0
 	
-	while str(contenu[debut+1:(fin)]) != niveau.getNom() and str(contenu[fin]) != "#":#tant que on ne l'a pas trouve ou que nous ne somme pas a la fin du fichier
-		if fin != 0:
-			debut = fin + 2
-		fin += 1
-		while str(contenu[fin]) != "#" and str(contenu[fin]) != ":":
-			fin += 1
-	
-	if contenu[fin] != "#":
-		while contenu[debut] != "," or contenu[debut] != "#":
-			contenu.remove(debut)
-			
-	#on definit la nouvelle fin du fichier
-	contenu.remove(len(contenu)-1)
-			
-	efface.close()
-	efface = open("saves/save.sv", "w")
-	for i in range(len(contenu)):
-		efface.write(str(contenu[i]))
-	efface.write("#")
-	efface.close()
+	if contenu.count('\n') > 0:
+        	contenu.remove('\n')
+        retour = ""
+	#on ecrase le fichier
+	for c in range(len(contenu)):
+        	retour += str(contenu[c])
+	sup = open("saves/save.sv", "w")
+	sup.write(retour)
+	sup.close()
