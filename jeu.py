@@ -101,11 +101,11 @@ def jeu(niveau):
         				pressed = pygame.mouse.get_pressed()
         				if pressed[0]:
             					if estTermine:
-            						if (counter + niveau.getRang(3)) < 180:            						
+            						if ((180-counter) + niveau.getRang(3)) < 180:            						
             							addsave(niveau, 3)
-            						elif (counter + niveau.getRang(2)) < 180:
+            						elif ((180-counter) + niveau.getRang(2)) < 180:
             							addsave(niveau, 2)
-            						elif (counter + niveau.getRang(1)) < 180:
+            						elif ((180-counter) + niveau.getRang(1)) < 180:
             							addsave(niveau, 1)
             						enjeu = False
             						running = False
