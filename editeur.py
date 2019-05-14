@@ -5,6 +5,7 @@ import os
 from pygame.locals import *
 from Level import *
 from menu import *
+from save import *
 
 def editeur():
 
@@ -53,8 +54,13 @@ def editeur():
 	terminer = pygame.draw.rect(screen, [255,54,54], pygame.Rect(int(8.75*largeur/10 - 90), 8.5*hauteur/10, 30, 15))
 	normal_text("Terminer !", int(8.75*largeur/10 - 150), 8.5*hauteur/10, (0, 0, 0), screen)
 
+	#on dessine la zone(premier appel)
 	edition, niveau = resetZoneEdition(4)
-
+	
+	#Musique maestro !
+	pygame.mixer.music.load("sons/editeur.mp3")
+	pygame.mixer.music.play()
+	
 	pygame.display.flip()
 	clock = pygame.time.Clock()
 	
@@ -63,11 +69,17 @@ def editeur():
 	
 		largeur, hauteur = pygame.display.get_surface().get_size()
 		
+		#si la musique se termine, on la relance
+		if pygame.mixer.music.get_busy()!=True:
+    			pygame.mixer.music.play()
+		
 		for event in pygame.event.get():
 		
+			#fermeture de fenetre
 			if event.type == pygame.QUIT:
+				pygame.mixer.music.stop()
 				running = False
-	
+			#gestion des evenements de la souris
 			if pygame.mouse.get_focused():
 				print str(niveau)
 				x, y = pygame.mouse.get_pos()
@@ -78,7 +90,53 @@ def editeur():
 				if collide:
 					pressed = pygame.mouse.get_pressed()
 					if pressed[0]: 
-						menu()
+						pygame.mixer.music.stop()
+						running = False
+				
+				
+				collide = terminer.collidepoint(x, y)
+				
+				#bout est termine?
+				if collide:
+					pressed = pygame.mouse.get_pressed()
+					if pressed[0]: 
+						if estRempli(niveau):
+							liste = os.listdir('levels/')
+							valide = False
+							i = 0
+							while(valide != True):
+								nom = "CUSTOM" + str(i)
+								valideux = True
+								
+								for c in range(len(liste)):
+									if ((nom + ".lvl") == liste[c]):
+										valideux = False
+								
+								if valideux:
+									valide = True
+								i += 1
+								
+							sauvegarde = Level(nom, 3*len(compteBloc), 4*len(compteBloc), 5*len(compteBloc))
+							sauvegarde.setPosition(niveau)
+							savelevel(sauvegarde)
+							running = False
+							
+				
+				
+				collide = creation.collidepoint(x, y)
+				
+				#creationbloc
+				if collide:
+					pressed = pygame.mouse.get_pressed()
+					if pressed[0]: 
+						present = False
+						for c in range(len(niveau)):
+							for l in range(len(niveau[c])):
+								if(niveau[c][l]==len(compteBloc)):
+									present = True
+						if present:
+							compteBloc.append((r(), r(), r()))
+							firstBloc = True
 				
 				
 				collide = bloc4.collidepoint(x, y)
@@ -91,7 +149,7 @@ def editeur():
 						compteBloc = [(r(),r(),r())]
 						firstBloc = True
 						screen.blit(zoneEdit, (1.25*largeur/10,  4*hauteur/10))
-						resetZoneEdition(4)
+						edition, niveau = resetZoneEdition(4)
 						
 				collide = bloc5.collidepoint(x, y)	
 					
@@ -103,7 +161,7 @@ def editeur():
 						compteBloc = [(r(),r(),r())]
 						firstBloc = True
 						screen.blit(zoneEdit, (1.25*largeur/10,  4*hauteur/10))
-						resetZoneEdition(5)
+						edition, niveau = resetZoneEdition(5)
 				
 				collide = bloc6.collidepoint(x, y)				
 				#bouton choix 6*6
@@ -114,7 +172,9 @@ def editeur():
 						compteBloc = [(r(),r(),r())]
 						firstBloc = True
 						screen.blit(zoneEdit, (1.25*largeur/10,  4*hauteur/10))
-						resetZoneEdition(6)
+						edition, niveau = resetZoneEdition(6)
+						
+				#verification de la collision du tableau en entier		
 				for c in range(len(edition)):
 					for l in range(len(edition[c])):
 						collide = edition[c][l].collidepoint(x, y)
@@ -122,10 +182,12 @@ def editeur():
 						if collide:
 							pressed = pygame.mouse.get_pressed()
 							if pressed[0]:
+								#on peut placer le premier bloc ou on veut
 								if firstBloc:
 									niveau[c][l] = len(compteBloc)
 									firstBloc = False
 								else:
+									#un pixel du bloc se trouve-t-il a proximite ? Sinon,creation d'un nouveau bloc
 									if verificationBloc(c, l, len(compteBloc)) and niveau[c][l] == 0:
 										niveau[c][l] = len(compteBloc)
 									else:
@@ -154,9 +216,13 @@ def editeur():
 		creation = pygame.draw.rect(screen, [255,54,54], pygame.Rect(1.25*largeur/10 + 150, 1.25*hauteur/10 + 47, 70, 20))
 		normal_text("Creer bloc", 1.25*largeur/10 + 158, 1.25*hauteur/10 + 52, (0, 0, 0), screen)
 		
-		zoneEdit.fill((238, 238, 238))
-		screen.blit(zoneEdit, (1.25*largeur/10,  4*hauteur/10))
-		edition = drawZoneEdition()
+		#on redessine le tableau
+		if(len(compteBloc)>=1 or firstBloc):
+		
+			zoneEdit.fill((238, 238, 238))
+			screen.blit(zoneEdit, (1.25*largeur/10,  4*hauteur/10))
+			edition = drawZoneEdition()
+			
 	
 		bloc4 = pygame.draw.rect(screen, [185,250,255], pygame.Rect(1.25*largeur/10,  1.25*hauteur/10 + 90, 30, 15))
 		normal_text("4*4", 1.25*largeur/10 + 5,  1.25*hauteur/10 + 91, (0, 0, 0), screen)
@@ -177,38 +243,31 @@ def editeur():
 			
 	pygame.quit()
 	
-def estRempli(taille):
-    termine = False
+#le niveau est-il rempli de 1mini ?	
+def estRempli(niveau):
+    termine = True
     c = 0
     l = 0 
 	
-    while c < len(taille):
-    	while l < len(taille[c]):
-		if taille[c][l] == 0:
+    while c < len(niveau) and termine != False:
+    	while l < len(niveau[c]):
+		if niveau[c][l] == 0:
 			termine = False
-		else:
-			termine = True
+		l+=1
+	c+= 1
     return(termine)
 
+#afficher du texte
 def normal_text(texte, x, y, color, screen): 
     font_text = pygame.font.SysFont('roboto', 17)
     affichage = font_text.render(texte, 1, (color))
     screen.blit(affichage,(x,y))
-    
+
+#afficher du texte    
 def title_text(texte, x, y, color, screen): 
     font_text = pygame.font.SysFont('roboto', 33)
     affichage = font_text.render(texte, 1, (color))
     screen.blit(affichage,(x,y))
-
-def conversion_tab(tab, i):
-
-	y = 0
-	while i >= len(tab):
-		i -= len(tab)
-		y += 1
-	x = i
-	
-	return(x, y)	
 
 #Reset ou definir pour la premier fois la zone de travail et le niveau
 def resetZoneEdition(taille):
@@ -261,8 +320,9 @@ def drawZoneEdition():
 			i += 1
 				
 	return(edition)
-	
-def verificationBloc(y, x, val):
+
+#un pixel du bloc se trouve-t-il a proximite ?	
+def verificationBloc(x, y, val):
 
 	retour = True
 	
@@ -270,7 +330,7 @@ def verificationBloc(y, x, val):
 		if y-1<0:#bord bas ?
 			if niveau[x+1][y] != val and niveau[x][y+1] != val :
 				retour = False
-		if y+1>len(niveau[x]):#bord haut?
+		if y+1>=len(niveau[x]):#bord haut?
 			if niveau[x][y-1] != val and niveau[x+1][y] != val:
 				retour = False
 		if y-1>=0 and y+1<len(niveau[x]):
@@ -280,7 +340,7 @@ def verificationBloc(y, x, val):
 		if y-1<0:#bord bas ?
 			if niveau[x-1][y] != val and niveau[x][y+1] != val:
 				retour = False
-		if y+1>len(niveau[x]):#bord haut ?
+		if y+1>=len(niveau[x]):#bord haut ?
 			if niveau[x][y-1] != val and niveau[x-1][y] != val:
 				retour = False
 		if y-1>=0 and y+1<len(niveau[x]) and niveau[x][y-1] != val and niveau[x-1][y] != val and niveau[x][y+1] != val:
@@ -290,7 +350,7 @@ def verificationBloc(y, x, val):
 		if y-1<0:#bord bas ?
 			if niveau[x-1][y] != val and niveau[x][y+1] != val and niveau[x+1][y] != val:
 				retour = False
-		if y+1>len(niveau[x]) and niveau[x][y-1] != val and niveau[x-1][y] != val and niveau[x+1][y] != val:#bord haut ?
+		if y+1>=len(niveau[x]) and niveau[x][y-1] != val and niveau[x-1][y] != val and niveau[x+1][y] != val:#bord haut ?
 			retour = False
 			
 		if y-1>=0 and y+1<len(niveau[x]) and niveau[x][y-1] != val and niveau[x-1][y] != val and niveau[x][y+1] != val and niveau[x+1][y] != val:
