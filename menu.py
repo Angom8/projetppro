@@ -155,9 +155,13 @@ def menu():
         						
         							pressed = pygame.mouse.get_pressed()
         							
-        							if pressed[0]:
-            								print "Deleting ... " + niveau[c][0].getNom()
-									fileremove(niveau[c][0])
+        							if pressed[0]:				
+									if os.path.isfile("levels/" + niveau[c][0].getNom() + ".lvl"):
+										print "Deleting ... " + niveau[c][0].getNom()
+										removesave(niveau[c][0])
+   										os.remove("levels/" + niveau[c][0].getNom() + ".lvl")
+    										niveau.remove(niveau[c])
+    										pygame.time.wait(2000)
 						c+=1
 						
 					#faire deux boucles n'est pas forcement optimal, mais permet de mieux separer les taches
@@ -205,11 +209,6 @@ def title_text(texte, x, y, color, screen):
     font_text = pygame.font.SysFont('roboto', 33)
     affichage = font_text.render(texte, 1, (color))
     screen.blit(affichage,(x,y))
-
-#Retire le niveau custom du fichier de sauvegarde et le supprime ensuite du repertoire
-def fileremove(niveau):#uniquement custom
-    removesave(niveau)
-    os.remove("levels/" + niveau.getNom() + ".lvl")
  
 #Affiche le niveau de base passe en parametre. Affiche le nom du niveau et un bouton play interactif
 def affichageniveau(niveau, x, y, screen):
