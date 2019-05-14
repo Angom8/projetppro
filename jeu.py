@@ -35,7 +35,9 @@ def jeu(niveau):
     pygame.draw.rect(ecran, (255, 255, 255), pygame.Rect(largeur/10,hauteur/10, 8*largeur/10, 8*hauteur/10))
     pygame.display.flip()
     
-    #init timer
+    #init timer + music
+    pygame.mixer.music.load("sons/jeu.mp3")
+    pygame.mixer.music.play()
     clock = pygame.time.Clock()
     counter, text = 180, '180'.rjust(3)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
@@ -70,6 +72,7 @@ def jeu(niveau):
     	for event in pygame.event.get():
     		#une fermeture de fenetre renvoie sur menu par le biais des try/catch
     		if event.type == pygame.QUIT:
+    			pygame.mixer.music.stop()
     			running = False
     		#decompte du timer s'il est en cours
 		if event.type == pygame.USEREVENT and enjeu == True: 
@@ -219,6 +222,7 @@ def jeu(niveau):
    		ecran.blit(font.render("Game over ! Retour au menu ...", True, (255, 0, 0)), (3*largeur/10, 8.5*hauteur/10))
    		pygame.display.flip()
    		pygame.time.wait(4000)
+   		pygame.mixer.music.stop()
    		running = False
    	del font
         pygame.display.flip()
@@ -329,7 +333,6 @@ def drawzonejeu(niveau):
     a = (220, 220, 220)
     b = (230, 230, 230)
     
-    
     for c in range(len(niveau.getPosition())):
     	i = 2+c
     	for l in range(len(niveau.getPosition())):
@@ -351,9 +354,9 @@ def drawaffichagejeu(niveau, tab):
     a = (220, 220, 220)
     b = (93, 218, 49)
     
-    for c in range(len(niveau.getPosition())):
+    for c in range(len(tab)):
     
-    	for l in range(len(niveau.getPosition())):
+    	for l in range(len(tab[c])):
     	
     		if(tab[l][c]==0):
    			pygame.draw.rect(ecran , a, (1.25*largeur/10+c*27 +200, 4*largeur/10+l*27, 27, 27))
